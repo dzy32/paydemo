@@ -1,0 +1,35 @@
+server:
+  port: 8088
+  servlet:
+    context-path: /puppy
+spring:
+  datasource:
+    url: jdbc:mysql://106.54.2.187:3306/puppy?characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+    username: puppy
+    password: puppy123456
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  resources:
+    static-locations: classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/,file:${upload.path},file:${upload.user_icon_path},file:${upload.theme}
+  jpa:
+    database: MYSQL
+    show-sql: false
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5Dialect
+upload:
+  path: H:\IDEA\image\upload\
+  user_icon_path: H:\IDEA\image\upload\user_icon_path\ # 上传用户头像文件时保存的位置
+  #user_icon_path_in_data: \user_icon_path\ # 用于数据库保存用户头像路径
+  theme: H:\IDEA\image\theme\
+ali:
+  url: https://openapi.alipaydev.com/gateway.do
+  appId: 2016101600697854
+  private_key: MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDkcT/9dhJ4Sj/P1o/3+2eDMXzJ9kFEQYwEjVpsMhxXMdxFED09ONfU+NcI6/VuqqCBjxvodLMxxGwZONSHu/YFKqWOgQS9PZL2yiEdOdJlFNQ9ceqxbMPCVZzcIVSkxDDkO1kShNGjSO+HXh8t8LMPiJx0OpbBCAVjnTfTL5f/uHo5rD+8EynT6FDGB6NPNRHca3dFvPlMTWzydVVxlToOg9QtYRv4YHpvxo+qba3r6q3Ud1eaNjezzrFPr1+R7MyPae8fgrHNHvgm74SkVrKFqqCwX2tK8HoYoJ8dxT6RPV3Xf/Bif39gnhuQSsU+yLwIL9VuvyAaqTMHjx5U9f/HAgMBAAECggEACBY6Pa7AWKHIQINH9W9g6rQFxuCAzvnDCyY13T6o4i1RruA0SsaIXXGxqw8vUQuZQvzd8Ayxi0F40ivA2k09GFG6KqFGmaxkV3gwU+iIGivyl3pA5KcFBwwg0WocpPiNAodXT+CDy1P5psEeOXIb5KDhaPvp+kteZXhbUY6Nwu+jw83i0sDmDRZBeTHT7J2UPfi2hWFGxmEtnaPgUwMk8fUWHpBuAPJe1lXtQtJQmjAVcHhy+0U+DuVy1Y6ZItKIoD+FZot82gkuRR7V/fWrMH5cE4v6BBs+z3NToplf83wKOFsJvWUh8501vePrhaWh15jOjcc0akKOJko3lx1AgQKBgQD3PQ9+m/Y2gVUQE5vKb+ksnyIx8F1kQ4nqIJw2Hnteb9McNltjHcxTMdjSDd0ANd+2cEJJmU8LyWHlDbr0GLiviiFDrGU6Jzo4Er5YD4LZthBtaBWj6blW/sFOpi9iBYaSof7bpYZ6i8TiOhVjPN4KxysSrKyA7dC+shuEtaCHywKBgQDsiavpqWmpZKNNHcDo7wUuHdfIMTPeV1WbqteU2qnAkv2CmLou/dkIRHcN3CuqkOQqh8AmT3GeN7iGMCQ7pdG/JCoIWkzC9K0aTsYEU/txuyDCFDMYlZmvKYayrqV4QgEy47XQt8zz+gRUXDRYH82eI5hisYwzUSb5iX5tVmnQdQKBgAr3d2d7TYmPZRGIfSGWozYqfN7QNaRL5qMu/R7dbUV8GlYnBxi3aqfKDz8KBGKNATZbdmVDWqFANopteHx5WD/ZFa6lx/uzX766/hxz268Ch2oC8urJZEI6nKJ7dqCXdCeu7doaVoO7DWmnf+ld+s9plDyI0kIJynea+OODFvLPAoGBAKTuRfnSkAN2UcuWwIlrCKCkXG6RqEoTeXTmxhVb9tt5Yt0qI0Ba7ncuThlS+PugtgfVyiysXlvlHHwsm0cgE0WFMO3MERQrSXw7iyU/bedahLfvH8W3ooaZnPuAfY6B75YNYxxa3MUOAvDTrgf4fQYUac//XvP1VQjQT2BrzbJ1AoGBAJBsKwpw4YIya6wsagWvWM+CKQTMq7ua2cLTYhMaH1QXbX2o37xZkpULwXb63nutsrltNoFL4UHiXoxYrQ0II86LnUSWVAJjortRk4PtAEI5KuT6t5oKuoKRAWcwUIeF1ALlu9KXWBAg+QuetLxCutqbVViGaUpet+oEorac6+bK
+  format: JSON
+  charset: UTF-8
+  alipay_public_key: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA5HE//XYSeEo/z9aP9/tngzF8yfZBREGMBI1abDIcVzHcRRA9PTjX1PjXCOv1bqqggY8b6HSzMcRsGTjUh7v2BSqljoEEvT2S9sohHTnSZRTUPXHqsWzDwlWc3CFUpMQw5DtZEoTRo0jvh14fLfCzD4icdDqWwQgFY5030y+X/7h6Oaw/vBMp0+hQxgejTzUR3Gt3Rbz5TE1s8nVVcZU6DoPULWEb+GB6b8aPqm2t6+qt1HdXmjY3s86xT69fkezMj2nvH4KxzR74Ju+EpFayhaqgsF9rSvB6GKCfHcU+kT1d13/wYn9/YJ4bkErFPsi8CC/Vbr8gGqkzB48eVPX/xwIDAQAB
+  sign_type: RSA2
+  notify_public_key: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAul/JZaUUS+tOe8k+4+XynYQ/gom5aeYwdYSVqxOqQ4AnMusUEpcDCnei03eHVDuC28auyimPJVJotIJp2dwob+yJ5pOo58BSAvSbqh82BHzdfgfl0/O2GHABQTxUx2ayAj75p+5LTKbpuLG71PnhX0cMXZIZD8LjlPcYwMLlag0FeuH/+5KmD5RZXdB0aZzlmY29En/gFRexOILiM7AHaviwxzVmQN2FTqXg62xtkSEGWHR8ayGBjCrVx3+SjULdZpvbhC5Bcbj+kiFVZ896TJdBjkspVqp+3gDWPfa0ssaBsx2UBO2OnNwLtMJoVX2KggQ2quqBiAiiRUp3PFNynQIDAQAB
+  notify_url: http://ysys.nat300.top/puppy/pay/notify
