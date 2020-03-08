@@ -89,87 +89,87 @@ public class PayController {
         }
         //return ResultDTOUtil.returnMsg(ResultEnums.ERROR.getCode(),ResultEnums.ERROR.getMsg(),null);
     }
-    @PostMapping("/notify")
-    public void notify(HttpServletRequest request){
-        Map<String, String> params = ConvertALiRequestParamsToMap.convertRequestParamsToMap(request); // 将异步通知中收到的待验证所有参数都存放到map中
-        String paramsJson = JSON.toJSONString(params);
-        log.info("支付宝回调，{}", paramsJson);
-        try {
-
-            // 调用SDK验证签名
-            boolean signVerified = AlipaySignature.rsaCheckV1(params, aLiPayConfig.getNotify_public_key(),
-                    aLiPayConfig.getCharset(),aLiPayConfig.getSign_type());
-            if (signVerified) {
-                log.info("支付宝回调签名认证成功");
-                AlipayCheckOrderUtil.check(params);
-//                修改订单支付状态
-                String outTradeNo = params.get("out_trade_no");
-                log.info(" out_trade_no ={}", outTradeNo);
-                Orders orders=orderService.findOne(Long.parseLong(outTradeNo));
-                if(orders == null){
-                    throw new RuntimeException("订单不存在 [outTradeNo="+outTradeNo+"]");
-                }
-                orderService.pay(orders.getOrdersId());
-//                return ResultDTOUtil.returnMsg(ResultEnums.PAY_ORDER_SUCCESS.getCode(),ResultEnums.PAY_ORDER_SUCCESS.getMsg(),null);
-            } else {
-                log.info("支付宝回调签名认证失败，signVerified=false, paramsJson:{}", paramsJson);
-//                return ResultDTOUtil.returnMsg(ResultEnums.PAY_ORDER_FAIL.getCode(),ResultEnums.PAY_ORDER_FAIL.getMsg(),null);
-            }
-        } catch (AlipayApiException e) {
-            log.error("支付宝回调签名认证失败,paramsJson:{},errorMsg:{}", paramsJson, e.getMessage());
-//            return ResultDTOUtil.returnMsg(ResultEnums.PAY_ORDER_FAIL.getCode(),ResultEnums.PAY_ORDER_FAIL.getMsg(),null);
-        }
-
-    }
-    @PostMapping("/AppToPay")
-    public String AppToPay(@RequestParam(value = "ordersId") Long ordersId){
-        Orders orders = orderService.findOne(ordersId);
-        return  payService.getAliPayOrderStr(orders);
-    }
-
-    @PostMapping("/refund/{ordersId}")
-    public Object refund(@PathVariable(value = "ordersId") Long ordersId){
-        Orders orders =orderService.findOne(ordersId);
-        AlipayClient alipayClient = new DefaultAlipayClient(aLiPayConfig.getUrl(),
-                aLiPayConfig.getAppId(),
-                aLiPayConfig.getPrivate_key(),
-                aLiPayConfig.getFormat(),
-                aLiPayConfig.getCharset(),
-                aLiPayConfig.getAlipay_public_key(),
-                aLiPayConfig.getSign_type());
-        AlipayTradePageRefundRequest request = new AlipayTradePageRefundRequest();
-        request.setBizContent("{" +
-//                "\"trade_no\":\"2014112611001004680073956707\"," +
-                "\"out_trade_no\":\" "+orders.getOrdersId()+"\"," +
-                "\"out_request_no\":\"HZ01RF001\"," +
-                "\"refund_amount\":"+orders.getAmount()+"," +
-                "\"biz_type\":\"CREDIT_REFUND\"," +
-                "\"refund_reason\":\"正常退款\"," +
-//                "\"operator_id\":\"OP001\"," +
-//                "\"store_id\":\"NJ_S_001\"," +
-//                "\"terminal_id\":\"NJ_T_001\"," +
-//                "\"extend_params\":{" +
-//                "\"credit_service_id\":\"2019031400000000000000369900\"," +
-//                "\"credit_category_id\":\"REFUND\"" +
-//                "    }" +
-                "  }");
-        log.info("request = {}",request);
-        try {
-            AlipayTradePageRefundResponse response = alipayClient.pageExecute(request);
-            if(response.isSuccess()){
-                log.info("reponse= {} ",response);
-                System.out.println("调用成功");
-                return orderService.refund(orders.getOrdersId());
-            } else {
-                System.out.println("调用失败");
-            }
-        }catch (AlipayApiException e){
-            e.printStackTrace();
-        }
-
-        return  ResultDTOUtil.returnMsg(ResultEnums.REFUND_ORDER_FAIL.getCode(),ResultEnums.REFUND_ORDER_FAIL.getMsg(),null);
-
-    }
+//    @PostMapping("/notify")
+//    public void notify(HttpServletRequest request){
+//        Map<String, String> params = ConvertALiRequestParamsToMap.convertRequestParamsToMap(request); // 将异步通知中收到的待验证所有参数都存放到map中
+//        String paramsJson = JSON.toJSONString(params);
+//        log.info("支付宝回调，{}", paramsJson);
+//        try {
+//
+//            // 调用SDK验证签名
+//            boolean signVerified = AlipaySignature.rsaCheckV1(params, aLiPayConfig.getNotify_public_key(),
+//                    aLiPayConfig.getCharset(),aLiPayConfig.getSign_type());
+//            if (signVerified) {
+//                log.info("支付宝回调签名认证成功");
+//                AlipayCheckOrderUtil.check(params);
+////                修改订单支付状态
+//                String outTradeNo = params.get("out_trade_no");
+//                log.info(" out_trade_no ={}", outTradeNo);
+//                Orders orders=orderService.findOne(Long.parseLong(outTradeNo));
+//                if(orders == null){
+//                    throw new RuntimeException("订单不存在 [outTradeNo="+outTradeNo+"]");
+//                }
+//                orderService.pay(orders.getOrdersId());
+////                return ResultDTOUtil.returnMsg(ResultEnums.PAY_ORDER_SUCCESS.getCode(),ResultEnums.PAY_ORDER_SUCCESS.getMsg(),null);
+//            } else {
+//                log.info("支付宝回调签名认证失败，signVerified=false, paramsJson:{}", paramsJson);
+////                return ResultDTOUtil.returnMsg(ResultEnums.PAY_ORDER_FAIL.getCode(),ResultEnums.PAY_ORDER_FAIL.getMsg(),null);
+//            }
+//        } catch (AlipayApiException e) {
+//            log.error("支付宝回调签名认证失败,paramsJson:{},errorMsg:{}", paramsJson, e.getMessage());
+////            return ResultDTOUtil.returnMsg(ResultEnums.PAY_ORDER_FAIL.getCode(),ResultEnums.PAY_ORDER_FAIL.getMsg(),null);
+//        }
+//
+//    }
+//    @PostMapping("/AppToPay")
+//    public String AppToPay(@RequestParam(value = "ordersId") Long ordersId){
+//        Orders orders = orderService.findOne(ordersId);
+//        return  payService.getAliPayOrderStr(orders);
+//    }
+//
+//    @PostMapping("/refund/{ordersId}")
+//    public Object refund(@PathVariable(value = "ordersId") Long ordersId){
+//        Orders orders =orderService.findOne(ordersId);
+//        AlipayClient alipayClient = new DefaultAlipayClient(aLiPayConfig.getUrl(),
+//                aLiPayConfig.getAppId(),
+//                aLiPayConfig.getPrivate_key(),
+//                aLiPayConfig.getFormat(),
+//                aLiPayConfig.getCharset(),
+//                aLiPayConfig.getAlipay_public_key(),
+//                aLiPayConfig.getSign_type());
+//        AlipayTradePageRefundRequest request = new AlipayTradePageRefundRequest();
+//        request.setBizContent("{" +
+////                "\"trade_no\":\"2014112611001004680073956707\"," +
+//                "\"out_trade_no\":\" "+orders.getOrdersId()+"\"," +
+//                "\"out_request_no\":\"HZ01RF001\"," +
+//                "\"refund_amount\":"+orders.getAmount()+"," +
+//                "\"biz_type\":\"CREDIT_REFUND\"," +
+//                "\"refund_reason\":\"正常退款\"," +
+////                "\"operator_id\":\"OP001\"," +
+////                "\"store_id\":\"NJ_S_001\"," +
+////                "\"terminal_id\":\"NJ_T_001\"," +
+////                "\"extend_params\":{" +
+////                "\"credit_service_id\":\"2019031400000000000000369900\"," +
+////                "\"credit_category_id\":\"REFUND\"" +
+////                "    }" +
+//                "  }");
+//        log.info("request = {}",request);
+//        try {
+//            AlipayTradePageRefundResponse response = alipayClient.pageExecute(request);
+//            if(response.isSuccess()){
+//                log.info("reponse= {} ",response);
+//                System.out.println("调用成功");
+//                return orderService.refund(orders.getOrdersId());
+//            } else {
+//                System.out.println("调用失败");
+//            }
+//        }catch (AlipayApiException e){
+//            e.printStackTrace();
+//        }
+//
+//        return  ResultDTOUtil.returnMsg(ResultEnums.REFUND_ORDER_FAIL.getCode(),ResultEnums.REFUND_ORDER_FAIL.getMsg(),null);
+//
+//    }
 
 
 
